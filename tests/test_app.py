@@ -1,0 +1,14 @@
+from http import HTTPStatus
+
+from fastapi.testclient import TestClient
+
+from app.app import app
+
+
+def test_root_return_ok_and_message():
+    client = TestClient(app)  # arrange
+
+    response = client.get("/")  # act
+
+    assert response.status_code == HTTPStatus.OK  # assert
+    assert response.json() == {"message": "Hello, FastAPI!"}  # assert
