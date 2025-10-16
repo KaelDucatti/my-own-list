@@ -3,7 +3,7 @@ from http import HTTPStatus
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from .schemas import Message
+from .schemas import Message, UserSchema
 
 app = FastAPI()
 
@@ -25,3 +25,8 @@ def hello():
         </body>
         </html>
     """
+
+
+@app.post("/users/")
+def create_user(user: UserSchema):
+    return user
