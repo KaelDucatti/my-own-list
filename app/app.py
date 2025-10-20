@@ -42,4 +42,4 @@ def create_user(user: UserSchema):
 
 @app.get("/users/", status_code=HTTPStatus.OK, response_model=UserList)
 def read_users():
-    return database
+    return {"users": database}
