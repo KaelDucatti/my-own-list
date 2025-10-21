@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 
 from .schemas import MessageSchema, UserDB, UserList, UserPublic, UserSchema
@@ -16,7 +16,7 @@ def read_root():
     return {"message": "Hello, FastAPI!"}
 
 
-@app.get("/hello", status_code=HTTPStatus.OK, response_class=HTMLResponse)
+@app.get("/hello/", status_code=HTTPStatus.OK, response_class=HTMLResponse)
 def hello():
     return """
         <html>
@@ -43,3 +43,21 @@ def create_user(user: UserSchema):
 @app.get("/users/", status_code=HTTPStatus.OK, response_model=UserList)
 def read_users():
     return {"users": database}
+
+
+@app.put(
+    "/users/{user_id}/", status_code=HTTPStatus.OK, response_model=UserPublic
+)
+def update_user(user: UserSchema, user_id: int):
+    user = UserDB(
+        **user.model_dump(),
+        id=user_id,
+    )
+    try:
+        database[user_id - 1] = user
+    except IndexError:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail=f"Usuário {user_id} não tem, meu patrão.",
+        )
+    return user
