@@ -61,3 +61,16 @@ def update_user(user: UserSchema, user_id: int):
             detail=f"Usuário {user_id} não tem, meu patrão.",
         )
     return user
+
+
+@app.delete(
+    "/users/{user_id}/", status_code=HTTPStatus.OK, response_model=UserPublic
+)
+def delete_user(user_id: int):
+    try:
+        return database.pop(user_id - 1)
+    except IndexError:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail=f"Usuário {user_id} não tem, meu patrão.",
+        )
