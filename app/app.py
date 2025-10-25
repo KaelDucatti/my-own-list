@@ -58,7 +58,7 @@ def update_user(user: UserSchema, user_id: int):
     except IndexError:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND,
-            detail=f"Usuário {user_id} não tem, meu patrão.",
+            detail="User not found",
         )
     return user
 
@@ -72,5 +72,5 @@ def delete_user(user_id: int):
     except IndexError:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND,
-            detail=f"Usuário {user_id} não tem, meu patrão.",
+            detail="User not found",
         )
