@@ -74,3 +74,10 @@ def delete_user(user_id: int):
             status_code=HTTPStatus.NOT_FOUND,
             detail="User not found",
         )
+
+
+@app.get(
+    "/users/{user_id}/", status_code=HTTPStatus.OK, response_model=UserPublic
+)
+def detail_user(user_id: int):
+    return database[user_id - 1]

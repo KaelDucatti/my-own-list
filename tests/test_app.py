@@ -80,6 +80,17 @@ def test_update_user_404(client):
     assert response.json() == {"detail": "User not found"}
 
 
+def test_detail_user(client):
+    response = client.get("/users/1/")
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        "username": "alice",
+        "email": "alice@example.com",
+        "id": 1,
+    }
+
+
 def test_delete_user(client):
     response = client.delete("/users/1/")
 
