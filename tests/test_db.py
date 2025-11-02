@@ -1,10 +1,23 @@
+from dataclasses import asdict
+
+from sqlalchemy import select
+
 from app.models import User
 
 
 def test_create_user(session):
-    user = User(username="alice", email="alice@example.com", password="secret")
+    new_user = User(
+        username="alice", email="alice@example.com", password="secret"
+    )
 
-    session.add(user)
+    session.add(new_user)
     session.commit()
 
-    assert user.password == "secret"
+    user = session.scalar(select(User).where(User.username == "alice"))
+
+    assert asdict(user) == {
+        "id": 1,
+        "username": "alice",
+        "email": "alice@example.com",
+        "password": "secret",
+    }
