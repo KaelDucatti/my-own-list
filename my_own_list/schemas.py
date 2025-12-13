@@ -12,3 +12,7 @@ class UserPublicSchema(BaseModel):
 
 class UserPrivateSchema(UserPublicSchema):
     password: str
+
+
+class UserDB(UserPrivateSchema):
+    id: int
